@@ -2,11 +2,21 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import Navbar from "./Navbar";
+import { useEffect } from "react";
 import { asset } from "../assets/asset";
 import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (token) {
+navigate(
+  '/dashboard'
+)
+    }
+
+  }, [])
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,13 +38,14 @@ const LoginPage = () => {
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Login failed");
+      navigate('/')
     }
   };
 
   return (
     <>
-      <Navbar />
-      <div className="min-h-screen mt-[4rem] flex flex-col md:flex-row">
+
+      <div className="min-h-screen  flex flex-col md:flex-row">
         {/* Left Section */}
         <div className="md:w-1/2 bg-gray-100 flex flex-col justify-center items-center p-8 md:p-12">
           <img

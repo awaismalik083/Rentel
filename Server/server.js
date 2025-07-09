@@ -49,7 +49,7 @@ app.get('/auth/google',
 // Step 2: Handle callback from Google
 app.get('/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:5173/', // Redirect to frontend
+    successRedirect: 'http://localhost:5173/dashboard', // Redirect to frontend
     failureRedirect: 'http://localhost:5173/login',
   })
 );

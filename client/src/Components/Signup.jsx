@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { asset } from "../assets/asset";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
-import Navbar from "./Navbar";
+
 
 const Signup = () => {
   const [eye, setEye] = useState(false);
@@ -15,6 +15,12 @@ const Signup = () => {
 
   const eyehandle = () => setEye(!eye);
 
+   useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (token) {
+          navigate('/dashboard')
+        }
+      }, [])
   const handleSignup = async (e) => {
     e.preventDefault();
 
@@ -30,6 +36,8 @@ const Signup = () => {
         localStorage.setItem("token", res.data.token);
         navigate("/dashboard");
       }
+
+     
     } catch (err) {
       console.error("Signup error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Signup failed");
@@ -38,7 +46,7 @@ const Signup = () => {
 
   return (
     <>
-      <Navbar />
+
       <div className="flex flex-col md:flex-row min-h-screen mt-16 font-sans">
         {/* Left Side */}
         <div className="md:w-1/2 bg-gray-100 flex flex-col justify-center items-center p-8 md:p-12">

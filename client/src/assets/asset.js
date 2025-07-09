@@ -72,11 +72,13 @@ import email from '../assets/email.png'
 import area from '../assets/area.svg'
 import bed from '../assets/bed.svg'
 import bath from '../assets/bath.svg'
+import maps from '../assets/maps.png'
 
 
 // All assets grouped here
 export const asset = {
   logo,
+  maps,
   lg,
   sg,
   area,

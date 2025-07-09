@@ -17,34 +17,32 @@ const DashDisplay = () => {
     }`;
 
   return (
-    <>
-      <DashSidebar />
-      <DashNavbar />
-      <DashCarousal/>
+    <div className="relative min-h-screen bg-gray-50">
+      {/* Sidebar on top */}
+      <div className="fixed top-0 left-0 w-full z-50">
+        <DashSidebar />
+      </div>
 
-      {/* Responsive Wrapper */}
-      <div className="relative min-h-screen lg:ml-[20rem] flex justify-center items-start mt-[40px] px-4 sm:px-6">
-        <div className="bg-gray-100 rounded-xl shadow-md w-full max-w-[75rem] min-h-[40rem] p-4 sm:p-6 md:p-8">
+      {/* Navbar below sidebar */}
+      <div className="  z-40">
+        <DashNavbar />
+      </div>
 
+      {/* Main Content Area */}
+      <div className="pt-[140px] px-4">
+        <DashCarousal />
+
+        <div className="bg-gray-100 rounded-xl shadow-md ml-[175px] max-w-[64rem] min-h-[40rem] p-6 mt-6">
           {/* Tabs & Filter Section */}
           <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center mb-8">
             <div className="flex flex-wrap gap-3">
-              <button
-                onClick={() => setSelected('recommended')}
-                className={tabClass('recommended')}
-              >
+              <button onClick={() => setSelected('recommended')} className={tabClass('recommended')}>
                 Recommended
               </button>
-              <button
-                onClick={() => setSelected('latest')}
-                className={tabClass('latest')}
-              >
+              <button onClick={() => setSelected('latest')} className={tabClass('latest')}>
                 Latest
               </button>
-              <button
-                onClick={() => setSelected('popular')}
-                className={tabClass('popular')}
-              >
+              <button onClick={() => setSelected('popular')} className={tabClass('popular')}>
                 Popular
               </button>
             </div>
@@ -58,33 +56,29 @@ const DashDisplay = () => {
           </div>
 
           {/* Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 place-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {cardAssets.map((item) => (
               <div
                 key={item.id}
-                className="w-full max-w-[22rem] bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition flex flex-col sm:flex-row"
+                className="bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition w-full"
               >
                 {/* Image */}
-                <div className="relative sm:w-[45%] w-full h-48 sm:h-auto">
-                  <img
-                    src={item.img}
-                    alt="property"
-                    className="h-full w-full object-cover"
-                  />
+                <div className="relative w-full h-44">
+                  <img src={item.img} alt="property" className="h-full w-full object-cover" />
                   <span className="absolute top-2 left-2 bg-blue-100 text-blue-700 font-semibold text-sm px-3 py-1 rounded-lg">
                     {item.price}
                   </span>
                 </div>
 
                 {/* Details */}
-                <div className="p-4 flex-1">
-                  <h3 className="font-semibold text-base text-gray-800 mb-1">
-                    Metro Jayakarta Hotel & Spa
+                <div className="p-3">
+                  <h3 className="font-semibold text-sm text-gray-800 mb-1 truncate">
+                    {item.name}
                   </h3>
-                  <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
+                  <p className="text-xs text-gray-500 flex items-center gap-1 mb-2">
                     <FaMapMarkerAlt className="text-blue-500" /> {item.location}
                   </p>
-                  <div className="flex text-gray-600 text-sm gap-4 mb-2 flex-wrap">
+                  <div className="flex text-gray-600 text-xs gap-3 mb-2 flex-wrap">
                     <span className="flex items-center gap-1">
                       <FaBed /> {item.beds}
                     </span>
@@ -95,15 +89,14 @@ const DashDisplay = () => {
                       <MdPhotoSizeSelectActual /> {item.photos}
                     </span>
                   </div>
-                  <span className="text-sm text-gray-500">{item.time}</span>
+                  <span className="text-xs text-gray-400">{item.time}</span>
                 </div>
               </div>
             ))}
           </div>
-
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

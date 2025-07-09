@@ -12,6 +12,9 @@ import Signup from './Components/Signup'
 import AddProperty from './Components/AddProperty'
 import DisplayProperty from './Components/DisplayProperty'
 import DashDisplay from './Dashboard/DashDisplay'
+import DashProperty from './Dashboard/DashProperty'
+import Order from './Components/Order'
+import Message from './Dashboard/Message'
 const App = () => {
   return (
     <>
@@ -27,6 +30,10 @@ const App = () => {
           <Route  path='/signup' element={<Signup/>}/>
           <Route  path='/addproperty' element={<AddProperty/>}/>
           <Route  path='/display' element={<DisplayProperty/>}/>
+          <Route  path='/dashproperty' element={<DashProperty/>}/>
+          <Route  path='/order' element={<Order/>}/>
+          <Route  path='/messages' element={<Message/>}/>
+
 
     
         </Routes>
