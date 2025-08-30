@@ -5,14 +5,16 @@ import { FcGoogle } from "react-icons/fc";
 import { useEffect } from "react";
 import { asset } from "../assets/asset";
 import { Link, useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify'
 const LoginPage = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
-navigate(
-  '/dashboard'
-)
+    
+      navigate(
+        '/dashboard'
+      )
     }
 
   }, [])
@@ -20,7 +22,7 @@ navigate(
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,12 +34,13 @@ navigate(
 
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
-        alert("Login successful!");
+
+
         navigate("/dashboard");
       }
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Login failed");
+      toast.error("failed to login")
       navigate('/')
     }
   };
@@ -102,17 +105,17 @@ navigate(
 
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm gap-2">
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" className="accent-red-600" />
+                  <input type="checkbox" className="accent-blue-600" />
                   Remember Me
                 </label>
-                <a href="#" className="text-red-600 hover:underline">
+                <a href="#" className="text-blue-600 hover:underline">
                   Forgot Password?
                 </a>
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition font-medium"
+                className="w-full bg-black text-white py-3 rounded-lg  transition font-medium"
               >
                 Login
               </button>
@@ -133,7 +136,7 @@ navigate(
               Don’t have any account?{" "}
               <Link
                 to="/signup"
-                className="text-red-600 font-medium hover:underline"
+                className="text-black font-medium hover:underline"
               >
                 Register
               </Link>

@@ -1,78 +1,58 @@
-import React, { useState } from "react";
+"use client";
+
+import React, { useState, useEffect, useContext } from "react";
+import { useLocation, Link } from "react-router-dom";
+import { PropertyContext } from "../Context/PropertyContext";
 import Navbar from "./Navbar";
-import { DisplayAsset } from "../DisplayAssets/DisplayAsset";
 import { asset } from "../assets/asset";
-import { Link } from "react-router-dom";
 import BlogFooter from "../pages/BlogFooter";
 import { useAppContext } from "../Context/Context";
-import PropertyCard from "../Components/PropertyCard";
-import { cardImages } from "../cardAssets/cardImages";
+import { FaArrowAltCircleRight, FaArrowAltCircleLeft } from "react-icons/fa";
+import {
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+  FaTag,
+  FaMapMarkerAlt,
+  FaHome,
+} from "react-icons/fa";
 
 // Swiper imports
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import Footer from "./Footer";
 
 const DisplayProperty = () => {
-  const properties = [
-    {
-      image: cardImages.img1,
-      price: "3.85",
-      marla: 8,
-      beds: 4,
-      baths: 5,
-      datePosted: "1 DAY AGO",
-    },
-    {
-      image: cardImages.img2,
-      price: "2.98",
-      marla: 5,
-      beds: 3,
-      baths: 4,
-      datePosted: "2 DAYS AGO",
-    },
-    {
-      image: cardImages.img3,
-      price: "2.98",
-      marla: 7,
-      beds: 1,
-      baths: 2,
-      datePosted: "4 DAYS AGO",
-    },
-    {
-      image: cardImages.img4,
-      price: "2.98",
-      marla: 5,
-      beds: 3,
-      baths: 4,
-      datePosted: "2 DAYS AGO",
-    },
-    {
-      image: cardImages.img2,
-      price: "2.98",
-      marla: 5,
-      beds: 3,
-      baths: 4,
-      datePosted: "2 DAYS AGO",
-    },
-    {
-      image: cardImages.img1,
-      price: "2.98",
-      marla: 5,
-      beds: 3,
-      baths: 4,
-      datePosted: "2 DAYS AGO",
-    },
-  ];
-
+  const location = useLocation();
+  const property = location.state?.property;
+  const { propertyData } = useContext(PropertyContext);
   const { features } = useAppContext();
-  const [showAll, setShowAll] = useState(false);
-  const visibleFeatures = showAll ? features : features.slice(0, 3);
 
-  const property = DisplayAsset[0];
-  const images = [property.image, property.imgae2, property.imgae3];
+  const [showAll, setShowAll] = useState(false);
+  const [showPhoneNumber, setShowPhoneNumber] = useState(false);
+  const [similarProperties, setSimilarProperties] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const images =
+    property?.Images?.map((img) => `http://localhost:3000${img}`) || [];
+
+console.log(propertyData)
+
+  useEffect(() => {
+    if (propertyData?.properties && property) {
+      const similar = propertyData.properties
+        .filter(
+          (p) =>
+            p._id !== property._id &&
+            p.City === property.City &&
+            p.Property_Type === property.Property_Type
+        )
+        .slice(0, 6);
+      setSimilarProperties(similar);
+    }
+  }, [propertyData, property]);
 
   const handleNext = () => {
     setCurrentImageIndex((prevIndex) =>
@@ -86,195 +66,279 @@ const DisplayProperty = () => {
     );
   };
 
+  const visibleFeatures = showAll ? features : features.slice(0, 3);
+
   return (
     <>
       <Navbar />
-      <section className="w-full min-h-screen bg-white px-10 py-8">
-        <div className="max-w-7xl mx-auto flex items-start justify-between gap-8">
+      <section className="w-full mt-20 min-h-screen bg-white px-4 sm:px-10 py-8">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start justify-between gap-8">
           {/* Left Section */}
-          <div className="flex-1">
-            <h1 className="text-2xl font-semibold mb-4 text-gray-800">
-              {property.title}
-            </h1>
-
+          <div className="flex-1 w-full">
             {/* Image Carousel */}
-            <div className="relative w-full max-w-4xl h-[400px]">
-              <img
-                src={images[currentImageIndex]}
-                alt={`Property ${currentImageIndex + 1}`}
-                className="rounded-lg w-full h-full object-cover transition-all duration-300"
-              />
-              <button
-                onClick={handlePrev}
-                className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-700 bg-opacity-50 text-white p-2 rounded-full"
-              >
-                ◀
-              </button>
-              <button
-                onClick={handleNext}
-                className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-700 text-white p-2 rounded-full"
-              >
-                ▶
-              </button>
-            </div>
-
-            {/* Property Location */}
-            <p className="mt-4 text-[10px] text-gray-600">{property.location}</p>
-
-            {/* Property Price */}
-            <p className="mt-2 text-3xl text-gray-600 font-semibold">
-              {property.price}
-            </p>
-
-            {/* Property Features */}
-            <div className="flex items-center gap-6 mt-4">
-              <div className="flex items-center gap-2">
-                <img src={asset.area} alt="Area" className="w-5 h-5" />
-                <p className="text-sm text-gray-700">{property.area}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img src={asset.bed} alt="Beds" className="w-5 h-5" />
-                <p className="text-sm text-gray-700">{property.beds}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <img src={asset.bath} alt="Baths" className="w-5 h-5" />
-                <p className="text-sm text-gray-700">{property.baths}</p>
-              </div>
-            </div>
-
-            {/* Status Row */}
-            <div className="flex justify-between items-center mt-5">
-              <div className="flex items-center space-x-2">
-                <div className="bg-gray-500 rounded-full w-2 h-2"></div>
-                <p className="text-gray-600">{property.status}</p>
-              </div>
-              <div className="flex items-center space-x-2 mr-[35rem]">
-                <div className="bg-gray-500 rounded-full w-2 h-2"></div>
-                <p className="text-gray-600">Updated 14 Hours Ago</p>
-              </div>
-            </div>
-
-            {/* Description */}
-            <div>
-              <h1 className="mt-5 text-3xl font-semibold text-gray-600">
-                Description
-              </h1>
-              <p className="mt-10 max-w-[50rem] text-gray-700 text-[16px]">
-                1000 yards bungalow for sale 6 master size bedrooms drawing room
-                dinning room. teak wood work peaceful location swimming pool
-                basement theatre room for further details feel free to contact us
-                INDUS ENTERPRISES
-              </p>
-
-              {/* Features Section */}
-              <h1 className="mt-10 text-3xl font-semibold text-gray-600">
-                Amenities
-              </h1>
-              <h2 className="text-xl mt-4 font-semibold text-gray-600">
-                Main Features
-              </h2>
-              <ul className="mt-4 space-y-2">
-                {visibleFeatures.map((item, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-gray-600"></span>
-                    <span className="text-sm text-gray-700">{item.name}</span>
-                  </li>
-                ))}
-              </ul>
-              {features.length > 3 && (
+            {images.length > 0 && (
+              <div className="relative w-full max-w-4xl h-[300px] sm:h-[400px] rounded-xl overflow-hidden shadow-lg">
+                <img
+                  src={images[currentImageIndex]}
+                  alt={`Property ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover transition-all duration-300"
+                />
                 <button
-                  onClick={() => setShowAll(!showAll)}
-                  className="mt-3 text-sm text-blue-600 font-medium hover:underline"
+                  onClick={handlePrev}
+                  className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full shadow-md transition-all"
                 >
-                  {showAll ? "Show Less ▲" : "Show More ▼"}
+                  <FaArrowAltCircleLeft className="text-black text-xl" />
                 </button>
+                <button
+                  onClick={handleNext}
+                  className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white bg-opacity-80 hover:bg-opacity-100 p-2 rounded-full shadow-md transition-all"
+                >
+                  <FaArrowAltCircleRight className="text-black text-xl" />
+                </button>
+                <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                  {images.map((_, index) => (
+                    <div
+                      key={index}
+                      className={`w-2 h-2 rounded-full ${
+                        currentImageIndex === index
+                          ? "bg-blue-600"
+                          : "bg-white bg-opacity-50"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Property Details */}
+            <div className="mt-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
+                {property?.Title}
+              </h1>
+
+              <div className="flex items-center mt-2">
+                <FaMapMarkerAlt className="text-red-500 mr-1" />
+                <p className="text-gray-600 text-sm sm:text-base">
+                  {`${property?.Street || ""}, ${property?.Town || ""}, ${
+                    property?.City || ""
+                  }`}
+                </p>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between">
+                <p className="text-2xl font-bold text-green-600">
+                  PKR {property?.monthlyRent}
+                </p>
+                <div className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm font-semibold">
+                  {property?.Purpose}
+                </div>
+              </div>
+
+              {/* Features */}
+              <div className="flex flex-wrap gap-10 mt-6 border-b pb-6">
+                <div className="flex items-center gap-2">
+                  <FaHome className="text-black" />
+                  <span className="text-gray-700">
+                    {property?.Property_Type}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaBed className="text-black" />
+                  <span className="text-gray-700">
+                    {property?.Bed || 0} Beds
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaBath className="text-black" />
+                  <span className="text-gray-700">
+                    {property?.Bath || 0} Baths
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaRulerCombined className="text-black" />
+                  <span className="text-gray-700">
+                    {property?.Area_Size} {property?.Area_Unit}
+                  </span>
+                </div>
+              </div>
+
+              {/* Video */}
+              {property?.Video && (
+                <div className="mt-8">
+                  <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                    Property Video
+                  </h2>
+                  <div className="w-full max-w-3xl aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                    <video
+                      src={`http://localhost:3000${property.Video}`}
+                      controls
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
               )}
+              {/* Description */}
+              <div className="mt-6">
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                  Description
+                </h2>
+                <p className="text-gray-700 leading-relaxed">
+                  {property?.Description || "No description available."}
+                </p>
+              </div>
             </div>
           </div>
 
           {/* Right Section */}
-          <div className="w-[300px]">
-            <div className="bg-white rounded-xl mt-12 border border-gray-200 shadow-md p-6 space-y-4">
+          <div className="w-full lg:w-[350px] mt-8 lg:mt-0">
+            {/* Contact Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-md p-6 space-y-4 sticky top-4">
               <h2 className="text-xl font-bold text-gray-800">
-                PKR <span className="text-2xl">25 Crore</span>
+                PKR <span className="text-2xl">{property?.monthlyRent}</span>
               </h2>
-              <button className="bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium py-3 w-full rounded-lg flex justify-center items-center gap-2">
-                <img src={asset.phone} alt="Phone Icon" className="w-5 h-5" />
-                Show Phone Number
-              </button>
+
+              {showPhoneNumber ? (
+                <div className="bg-green-100 border border-green-200 text-green-800 py-3 px-4 rounded-lg text-center font-semibold">
+                  +{property?.Phone_Number_1 || "Not provided"}
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowPhoneNumber(true)}
+                  className="bg-blue-600 hover:bg-blue-700 transition-colors text-white text-sm font-medium py-3 w-full rounded-lg flex justify-center items-center gap-2"
+                >
+                  <img src={asset.phone} alt="Phone" className="w-5 h-5" />
+                  Show Phone Number
+                </button>
+              )}
             </div>
 
-            <div className="flex flex-col bg-white border border-gray-200 shadow-md p-6 space-y-4 rounded-xl mt-10">
-              <h1 className="text-2xl font-semibold">Ask About Property</h1>
-              <input
-                className="w-full py-3 outline-none p-3 text-[13px] border-b border-gray-300"
-                type="text"
-                placeholder="Enter Your Name"
-                required
-              />
-              <input
-                className="w-full py-3 outline-none p-3 text-[13px] border-b border-gray-300"
-                type="email"
-                placeholder="Email is Required"
-                required
-              />
-              <input
-                className="w-full py-3 outline-none p-3 text-[13px] border-b border-gray-300"
-                type="tel"
-                placeholder="Phone Number"
-                required
-              />
-              <textarea
-                className="w-full outline-none text-[14px] p-3 border border-gray-300 rounded-md"
-                rows="4"
-                placeholder="I would like to inquire about your property. Please contact me at your earliest convenience."
-              ></textarea>
-              <button className="border-2 border-gray-700 hover:bg-gray-200 w-full py-2 rounded-md flex items-center justify-center gap-2">
-                <img src={asset.email} alt="Email Icon" className="w-4 h-4" />
-                Send Email
-              </button>
+            {/* Inquiry Form */}
+            <div className="bg-white border border-gray-200 shadow-md p-6 rounded-xl mt-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">
+                Contact Agent
+              </h2>
+              <form className="space-y-4">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-3 border-b border-gray-300 focus:border-blue-500 outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    className="w-full px-4 py-3 border-b border-gray-300 focus:border-blue-500 outline-none"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    className="w-full px-4 py-3 border-b border-gray-300 focus:border-blue-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <textarea
+                    placeholder="Your Message"
+                    rows="4"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:border-blue-500 outline-none"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-md font-medium transition-colors"
+                >
+                  Send Message
+                </button>
+              </form>
             </div>
 
-            <div className="w-full h-auto flex flex-col rounded-xl drop-shadow-2xl bg-white border border-gray-200 mt-6 p-4">
-              <h1 className="text-3xl font-semibold">Useful Links</h1>
-              <p className="mt-5 font-semibold text-[15px]">Other Useful Links</p>
-              <Link to="#" className="hover:text-blue-600 text-[12px] mt-5">
-                Houses For Sale in DHA Phase 6 Karachi (855)
-              </Link>
-              <Link to="#" className="hover:text-blue-600 text-[12px] mt-3">
-                Flats For Sale in Bahawalpur DHA (455)
-              </Link>
-            </div>
+           
           </div>
         </div>
+
+        {/* Similar Properties */}
+        {similarProperties.length > 0 && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              Similar Properties
+            </h2>
+            <Swiper
+              modules={[Navigation]}
+              navigation
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 1.2 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 3 },
+                1280: { slidesPerView: 4 },
+              }}
+            >
+              {similarProperties.map((prop) => (
+                <SwiperSlide key={prop._id}>
+                  <Link
+                    to={`/display/${prop._id}`}
+                    state={{ property: prop }}
+                    className="block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+                  >
+                    <div className="relative h-48 w-full">
+                      <img
+                        src={`http://localhost:3000${prop.Images?.[0]}`}
+                        alt={prop.Title}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.src =
+                            "https://via.placeholder.com/400x300?text=Property+Image";
+                        }}
+                      />
+                      {prop.Purpose && (
+                        <div className="absolute top-3 right-3 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                          {prop.Purpose}
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-3xl text-gray-800 line-clamp-1">
+                        {prop.Title}
+                      </h3>
+                      <div className="flex items-center mt-1 text-sm text-gray-600">
+                        <FaMapMarkerAlt className="mr-1 text-red-500 text-xs" />
+                        <span>{prop.City}</span>
+                      </div>
+                      <div className="mt-3 flex items-center text-green-600 font-bold">
+                        <FaTag className="mr-2 text-sm" />
+                        <span>PKR {prop.monthlyRent}</span>
+                      </div>
+                      <div className="flex justify-between mt-4 pt-3 border-t border-gray-100 text-xs text-gray-600">
+                        <div className="flex flex-col items-center">
+                          <FaBed className="text-blue-500" />
+                          <span>{prop.Bed || 0} Beds</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <FaBath className="text-blue-500" />
+                          <span>{prop.Bath || 0} Baths</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                          <FaRulerCombined className="text-blue-500" />
+                          <span>
+                            {prop.Area_Size} {prop.Area_Unit}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        )}
       </section>
-
-      {/* 🏠 Property Carousel Section */}
-      <div className="px-6 pb-10">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Similar Properties
-        </h2>
-        <Swiper
-          modules={[Navigation]}
-          navigation
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 1.2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
-          }}
-        >
-          {properties.map((property, index) => (
-            <SwiperSlide key={index}>
-              <PropertyCard {...property} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-
-      <BlogFooter />
+      <Footer />
     </>
   );
 };

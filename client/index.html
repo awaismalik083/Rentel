@@ -1,13 +1,32 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + React</title>
+    <!-- In public/index.html head tag -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"
+    />
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6LfmCIgrAAAAAOzSpR6zyjqL69A1th3UCm_cNbt8"></script>
+    <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.enterprise.ready(async () => {
+          const token = await grecaptcha.enterprise.execute(
+            "6LfmCIgrAAAAAOzSpR6zyjqL69A1th3UCm_cNbt8",
+            { action: "LOGIN" }
+          );
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

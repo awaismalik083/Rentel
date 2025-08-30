@@ -1,5 +1,4 @@
-
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -13,13 +12,10 @@ const authMiddleware = async (req, res, next) => {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log("Extracted token:", token); // 🔍 DEBUG
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Decoded token:", decoded); // 🔍 DEBUG
-
-    req.user = decoded;
+    req.userId = decoded.id; // ✅ Fixed
     next();
   } catch (error) {
     console.error("JWT error:", error.message);
@@ -29,4 +25,5 @@ const authMiddleware = async (req, res, next) => {
     });
   }
 };
-export default authMiddleware
+
+export default authMiddleware;

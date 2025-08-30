@@ -4,15 +4,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
-// Create JWT Token
 const createToken = (id) => {
   const jwtSecret = process.env.JWT_SECRET;
   return jwt.sign({ id }, jwtSecret, { expiresIn: "1d" });
 };
 
-// Login user
+// ✅ Login user
 const loginuser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -23,7 +22,11 @@ const loginuser = async (req, res) => {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    if (user.password === "google-oauth") {
+      return res.status(403).json({ success: false, message: "Please login with Google" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password); // ✅ Fixed await
 
     if (!isMatch) {
       return res.status(401).json({ success: false, message: "Invalid credentials" });
@@ -37,47 +40,48 @@ const loginuser = async (req, res) => {
   }
 };
 
-// Register user
+// ✅ Register user
 const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    // Check if all fields are provided
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: "Please fill all fields" });
     }
 
-    const exist = await userModel.findOne({ email });
-    if (exist) {
-      return res.status(400).json({ success: false, message: "User already exists" });
-    }
-
     if (!validator.isEmail(email)) {
-      return res.status(400).json({ success: false, message: "Please enter a valid email address" });
+      return res.status(400).json({ success: false, message: "Invalid email" });
     }
 
     if (password.length < 8) {
-      return res.status(400).json({ success: false, message: "Password must be at least 8 characters long" });
+      return res.status(400).json({ success: false, message: "Password too short" });
     }
 
-    // Hashing password
+    const exist = await userModel.findOne({ email });
+
+    if (exist) {
+      if (exist.isVerified) {
+        return res.status(400).json({ success: false, message: "User already exists" });
+      }
+      return res.status(403).json({ success: false, message: "Email verification pending" });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Creating new user
-    const newuser = new userModel({
-      name:name,
-      email:email,
+    const newUser = await userModel.create({
+      name,
+      email,
       password: hashedPassword,
+      isVerified: true,
     });
 
-    const user = await newuser.save();
-    const token = createToken(user._id);
+    const token = createToken(newUser._id);
 
     res.status(201).json({
       success: true,
-      token,
-      message: "User created successfully",
+      message: "User registered successfully",
+      token
     });
 
   } catch (error) {
@@ -86,32 +90,18 @@ const registerUser = async (req, res) => {
   }
 };
 
-
-//get user data
-
+// ✅ Get user data
 const getUserData = async (req, res) => {
   try {
-    const user = await userModel.findById(req.body.userId).select("-password"); // exclude password if needed
+    const user = await userModel.findById(req.userId).select("-password");
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    res.status(200).json({
-      success: true,
-      user
-    });
+    res.status(200).json({ success: true, user });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching user data",
-      error: error.message
-    });
+    res.status(500).json({ success: false, message: "Error fetching user", error: error.message });
   }
 };
 
-
-
-export { loginuser, registerUser, createToken,getUserData };
+export { loginuser, registerUser, createToken, getUserData };

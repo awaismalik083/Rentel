@@ -1,125 +1,170 @@
-import React from 'react';
-import DashSidebar from '../Dashboard/DashSidebar';
-import DashNavbar from '../Dashboard/DashNavbar';
-import { asset } from '../assets/asset';
-import { SlCalender } from 'react-icons/sl';
+import React, { useEffect, useState } from "react";
+import DashSidebar from "../Dashboard/DashSidebar";
+import DashNavbar from "../Dashboard/DashNavbar";
+import {
+  FaBed,
+  FaBath,
+  FaRulerCombined,
+  FaTag,
+  FaMapMarkerAlt,
+  FaHome,
+} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
+import axios from "axios";
 
 const Order = () => {
-  const order_list = [
-    {
-      id: "1234321",
-      location: "Star Sun Hotel & Apartments",
-      rooms: "1",
-      date: "15 Jan 2023",
-      status: "Paid Off",
-    },
-  ];
+  const [propertyList, setPropertyList] = useState([]);
+  const BASE_URL = "http://localhost:3000";
+  const user = localStorage.getItem("sellerId");
+  const SellerId = JSON.parse(user);
 
-  const order_history = [
-    {
-      id: "1234321",
-      location: "Star Sun Hotel & Apartments",
-      rooms: "1",
-      date: "15 Jan 2023",
-      status: "Success",
-      cancel: "Canceled"
-    },
-    {
-      id: "1234322",
-      location: "Ocean View Resort",
-      rooms: "2",
-      date: "22 Feb 2023",
-      status: "Success",
-      cancel: "Canceled"
-    },
-  ];
+  useEffect(() => {
+    const fetchProperties = async () => {
+      if (!SellerId) {
+        toast.error("Seller Id required");
+        return;
+      }
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/api/property/getAllProperties/${SellerId}`
+        );
+        setPropertyList(res.data.properties || []);
+      } catch (error) {
+        console.log("Error fetching properties:", error);
+      }
+    };
+
+    fetchProperties();
+  }, [SellerId]);
+
+  const deleteProperty = async (id) => {
+    try {
+      const res = await axios.delete(
+        `${BASE_URL}/api/property/deleteproperty/${id}`
+      );
+      if (res.data) {
+        toast.success("Property Deleted Successfully");
+        setPropertyList((prev) => prev.filter((p) => p._id !== id));
+      }
+    } catch (error) {
+      toast.error("Error deleting property");
+      console.error(error);
+    }
+  };
+
+  // Truncate helper
+  const truncate = (text, length) =>
+    text?.length > length ? text.substring(0, length) + "..." : text;
 
   return (
     <>
-      <DashNavbar />
+    
       <DashSidebar />
 
-      <div className="ml-0 md:ml-[10rem] px-4 sm:px-6 mt-4">
-        {/* My Orders Section */}
-        <div className="flex flex-col items-center">
-          <h1 className="text-2xl font-bold relative left-7 text-gray-600 mb-4 self-start">
-            My Orders
-          </h1>
+      <div className="ml-0 md:ml-[10rem] px-6 py-10 bg-gray-50 min-h-screen">
+        <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
+          My Listings
+        </h1>
 
-          {order_list.map((order, index) => (
-            <div
-              key={index}
-              className="w-full max-w-5xl rounded-xl bg-gray-100 px-4 py-6 mb-4 shadow-sm"
-            >
-              <div className="flex flex-col md:flex-row items-start md:items-center">
-                <img
-                  className="w-full md:w-[15rem] rounded-xl object-cover"
-                  src={asset.sg}
-                  alt="hotel"
-                />
-                <div className="mt-4 md:mt-0 md:ml-8 flex flex-col gap-1">
-                  <p className="text-gray-800 text-sm">Order ID: {order.id}</p>
-                  <h1 className="font-bold text-md text-gray-900">
-                    {order.location}
-                  </h1>
-                  <p className="text-gray-800 text-sm">
-                    {order.rooms} Room{order.rooms > 1 ? "s" : ""}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <SlCalender className="text-sm" />
-                    <p className="text-gray-800 text-sm">{order.date}</p>
+        {propertyList.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {propertyList.map((prop) => (
+              <div
+                key={prop._id}
+                className="bg-white rounded-xl overflow-hidden shadow hover:shadow-xl border border-gray-200 transition-all"
+              >
+                <Link
+                  to="/dashproperty"
+                  state={{ property: prop }}
+                  className="block no-underline text-inherit"
+                >
+                  {/* Image */}
+                  <div className="relative h-60">
+                    <img
+                      src={
+                        prop.Images?.[0]
+                          ? `${BASE_URL}${prop.Images[0]}`
+                          : "https://via.placeholder.com/400x300?text=Property+Image"
+                      }
+                      alt={prop.Title}
+                      className="w-full h-full object-cover"
+                    />
+                    {prop.Purpose && (
+                      <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                        {prop.Purpose}
+                      </div>
+                    )}
                   </div>
-                  <div className="bg-blue-200 mt-2 w-fit px-4 py-1 text-blue-500 text-sm text-center rounded-2xl">
-                    {order.status}
+
+                  {/* Details */}
+                  <div className="p-4">
+                    <div className="text-sm text-gray-600 mb-1 flex items-center">
+                      <FaHome className="mr-1 text-blue-500" />
+                      {prop.Property_Type || "Type N/A"}
+                    </div>
+
+                    <h2
+                      className="text-lg font-semibold text-gray-800 mb-2 truncate"
+                      title={prop.Title}
+                    >
+                      {truncate(prop.Title, 30)}
+                    </h2>
+
+                    <div className="flex items-center text-gray-500 text-sm mb-2">
+                      <FaMapMarkerAlt className="mr-1 text-red-500" />
+                      {truncate(`${prop.City}, ${prop.Location}`, 30)}
+                    </div>
+
+                    <div className="text-green-600 font-bold text-md mb-3 flex items-center">
+                      <FaTag className="mr-1" />
+                      PKR {prop.monthlyRent || prop.price || "N/A"}
+                      {prop.monthlyRent && (
+                        <span className="text-xs text-gray-500 ml-1">
+                          /month
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex justify-between border-t pt-3 text-sm text-gray-600">
+                      <div className="flex flex-col items-center">
+                        <FaBed className="text-blue-500" />
+                        {prop.Bed || 0} Beds
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <FaBath className="text-blue-500" />
+                        {prop.Bath || 0} Baths
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <FaRulerCombined className="text-blue-500" />
+                        {prop.Area_Size} {prop.Area_Unit}
+                      </div>
+                    </div>
                   </div>
+                </Link>
+
+                {/* Action Buttons */}
+                <div className="flex justify-between px-4 pb-4 mt-2 gap-2">
+                  <button
+                    onClick={() => deleteProperty(prop._id)}
+                    className="w-full bg-red-600 text-white px-3 py-2 rounded-md text-sm hover:bg-red-700 transition"
+                  >
+                    Delete
+                  </button>
+                  <Link
+                    to="/UpdateProperty"
+                    state={{ property: prop }}
+                    className="w-full text-center bg-gray-700 text-white px-3 py-2 rounded-md text-sm hover:bg-gray-800 transition"
+                  >
+                    Update
+                  </Link>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Order History Section */}
-        <div className="flex flex-col items-center mt-8">
-          <h1 className="text-2xl font-bold  relative left-7 text-gray-600 mb-4 self-start">
-            Order History
-          </h1>
-
-          {order_history.map((order, index) => (
-            <div
-              key={index}
-              className="w-full max-w-5xl rounded-xl bg-gray-100 px-4 py-6 mb-4 shadow-sm"
-            >
-              <div className="flex flex-col md:flex-row items-start md:items-center">
-                <img
-                  className="w-full md:w-[15rem] rounded-xl object-cover"
-                  src={asset.lg}
-                  alt="hotel"
-                />
-                <div className="mt-4 md:mt-0 md:ml-8 flex flex-col gap-1">
-                  <p className="text-gray-800 text-sm">Order ID: {order.id}</p>
-                  <h1 className="font-bold text-md text-gray-900">
-                    {order.location}
-                  </h1>
-                  <p className="text-gray-800 text-sm">
-                    {order.rooms} Room{order.rooms > 1 ? "s" : ""}
-                  </p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <SlCalender className="text-sm" />
-                    <p className="text-gray-800 text-sm">{order.date}</p>
-                  </div>
-                  <div className="flex flex-wrap gap-3 mt-2">
-                    <div className="bg-green-200 px-4 py-1 text-green-500 text-sm text-center rounded-2xl">
-                      {order.status}
-                    </div>
-                    <div className="bg-red-200 px-4 py-1 text-red-500 text-sm text-center rounded-2xl">
-                      {order.cancel}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500 mt-20">No properties found</p>
+        )}
       </div>
     </>
   );

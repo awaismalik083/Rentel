@@ -1,14 +1,31 @@
 import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
+import userModel from '../models/userModel.js';
 
 passport.use(new GoogleStrategy({
-  clientID: process.env.GOOGLE_CLIENT_ID||"1043456571826-29sh8qlc5ja2hq9atk99nluakqjkqrj0.apps.googleusercontent.com",
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET||"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",
+  clientID: process.env.GOOGLE_CLIENT_ID || "your-client-id",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "your-client-secret",
   callbackURL: "/auth/google/callback",
 },
-(accessToken, refreshToken, profile, done) => {
-  // You can save user info to DB here
-  return done(null, profile);
+async (accessToken, refreshToken, profile, done) => {
+  try {
+    const email = profile.emails[0].value;
+
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      user = await userModel.create({
+        name: profile.displayName,
+        email,
+        password: "google-oauth",
+        isVerified: true
+      });
+    }
+
+    return done(null, user);
+  } catch (error) {
+    return done(error, null);
+  }
 }));
 
 passport.serializeUser((user, done) => {

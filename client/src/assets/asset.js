@@ -1,7 +1,6 @@
-// src/constants/assets.js
 
 
-
+import hero from "../assets/hero.png";
 import lg from "../assets/lg.png";
 import sg from "../assets/sg.png";
 import home from "../assets/home.png";
@@ -44,40 +43,42 @@ import mail from "../assets/mail.png";
 import blg1 from "../assets/blg1.png";
 import blg2 from "../assets/blg2.png";
 import blg3 from "../assets/blg3.png";
-import folder from '../assets/folder.png'
-import footer1 from '../assets/footer1.png'
-import logo7 from '../assets/logo7.png'
-import insta from '../assets/insta.png'
-import fb from '../assets/fb.png'
-import twt from '../assets/twt.png'
-import link from '../assets/link.png'
-import plant from '../assets/plant.png'
-import apple from '../assets/apple.svg'
-import eyeopen from '../assets/eyeopen.svg'
-import eyeclose from '../assets/eyeclose.svg'
-import cnic from '../assets/cnic.jpg'
-import chair from '../assets/chair.jpg'
-import metro2 from '../assets/metro2.jpg'
-import metro1 from '../assets/metro1.jpg'
-import mobile from '../assets/mobile.jpg'
-import phone1 from '../assets/phone1.jpg'
-import speedo from '../assets/speedo.jpg'
-import blog1 from '../assets/blog1.jpg'
-import blog2 from '../assets/blog2.png'
-import blog3 from '../assets/blog3.png'
-import blog4 from '../assets/blog4.png'
-import blog5 from '../assets/blog5.png'
-import blog6 from '../assets/blog6.png'
-import email from '../assets/email.png'
-import area from '../assets/area.svg'
-import bed from '../assets/bed.svg'
-import bath from '../assets/bath.svg'
-import maps from '../assets/maps.png'
-
+import folder from "../assets/folder.png";
+import footer1 from "../assets/footer1.png";
+import logo7 from "../assets/logo7.png";
+import insta from "../assets/insta.png";
+import fb from "../assets/fb.png";
+import twt from "../assets/twt.png";
+import link from "../assets/link.png";
+import plant from "../assets/plant.png";
+import apple from "../assets/apple.svg";
+import eyeopen from "../assets/eyeopen.svg";
+import eyeclose from "../assets/eyeclose.svg";
+import cnic from "../assets/cnic.jpg";
+import chair from "../assets/chair.jpg";
+import metro2 from "../assets/metro2.jpg";
+import metro1 from "../assets/metro1.jpg";
+import mobile from "../assets/mobile.jpg";
+import phone1 from "../assets/phone1.jpg";
+import speedo from "../assets/speedo.jpg";
+import blog1 from "../assets/blog1.jpg";
+import blog2 from "../assets/blog2.png";
+import blog3 from "../assets/blog3.png";
+import blog4 from "../assets/blog4.png";
+import blog5 from "../assets/blog5.png";
+import blog6 from "../assets/blog6.png";
+import email from "../assets/email.png";
+import area from "../assets/area.svg";
+import bed from "../assets/bed.svg";
+import bath from "../assets/bath.svg";
+import maps from "../assets/maps.png";
+import men from "../assets/men.jpg";
 
 // All assets grouped here
 export const asset = {
   logo,
+  hero,
+  men,
   maps,
   lg,
   sg,
@@ -118,7 +119,7 @@ export const asset = {
   cnic,
   mobile,
   blog1,
-  phone
+  phone,
 };
 
 // Logos used for "Trusted by companies" section
@@ -133,17 +134,15 @@ export const Logos = [
 
 // Blog Card Set
 export const blog = [
-  { Image: blg1, 
-    description: "Best Areas for Couples to Live in Karrachi"
-   },
+  { Image: blg1, description: "Best Areas for Couples to Live in Karrachi" },
   {
     Image: blg2,
     description: "How to Properly Verfiy Ownership in Pakistan",
   },
- 
+
   {
-    Image:blg3,
-   description:"Villa Rents in Dubai have Reached on All-Time High"
+    Image: blg3,
+    description: "Villa Rents in Dubai have Reached on All-Time High",
   },
 ];
 
@@ -268,99 +267,112 @@ export const Sellers = [
   },
 ];
 
-
-
-
 export const blog_Cards = [
   {
-    id:"1",
-    Image:metro2,
-    Title :"Green Lne Bus Karachi:Route,Stations,Timings,Ticket Price and More",
-    Description:"The Green Line Bus Rapid Transit (BRT) project is a state-of-the-art mass transit system in Karachi designed to upgrade the...",
-    Date:"4 May 2025",
+    id: "1",
+    Image: metro2,
+    Title: "Green Lne Bus Karachi:Route,Stations,Timings,Ticket Price and More",
+    Description:
+      "The Green Line Bus Rapid Transit (BRT) project is a state-of-the-art mass transit system in Karachi designed to upgrade the...",
+    Date: "4 May 2025",
   },
   {
-    id:"2",
-    Image:phone1,
-    Title :"How to Quickly Check CNIC Number with Your Mobile Number in Pakistan",
-    Description:"Are you in a situation where you need to check your or someone else's CNIC number but can't find the...",
-    Date:"6 Jaunuary 2025",
+    id: "2",
+    Image: phone1,
+    Title:
+      "How to Quickly Check CNIC Number with Your Mobile Number in Pakistan",
+    Description:
+      "Are you in a situation where you need to check your or someone else's CNIC number but can't find the...",
+    Date: "6 Jaunuary 2025",
   },
   {
-    id:"3",
-    Image:metro1,
-    Title :"Metro Bus Islamabad:Route,Stations,Timings,Ticket Price and More",
-    Description:"The Islamabad-Rawalpindi Metro Bus is a modern transportation system connecting Islamabad and Rawalpindi's twin cities. The project was initiated in...",
-    Date:"8 September 2024",
+    id: "3",
+    Image: metro1,
+    Title: "Metro Bus Islamabad:Route,Stations,Timings,Ticket Price and More",
+    Description:
+      "The Islamabad-Rawalpindi Metro Bus is a modern transportation system connecting Islamabad and Rawalpindi's twin cities. The project was initiated in...",
+    Date: "8 September 2024",
   },
 
- {
-    id:"4",
-    Image:chair,
-    Title :"Top 10 Marble Flooring For Pakistani Homes,Tyes, Prices and Features",
-    Description:"Marble flooring is a popular choice for homes in Pakistan due to its elegance and durability. In this article, we will explore the top 10 marble  in...",
-    Date:"7 October 2024",
+  {
+    id: "4",
+    Image: chair,
+    Title:
+      "Top 10 Marble Flooring For Pakistani Homes,Tyes, Prices and Features",
+    Description:
+      "Marble flooring is a popular choice for homes in Pakistan due to its elegance and durability. In this article, we will explore the top 10 marble  in...",
+    Date: "7 October 2024",
   },
   {
-    id:"5",
-    Image:mobile,
-    Title :"NADRA ID Card Tracking Made Easy: A Step-by-Step Guide",
-    Description:"Getting your NADRA ID Card, also known as the Computerized National Identity Card (CNIC), is an important task for every...",
-    Date:"4 march 2024",
+    id: "5",
+    Image: mobile,
+    Title: "NADRA ID Card Tracking Made Easy: A Step-by-Step Guide",
+    Description:
+      "Getting your NADRA ID Card, also known as the Computerized National Identity Card (CNIC), is an important task for every...",
+    Date: "4 march 2024",
   },
   {
-    id:"6",
-    Image:speedo,
-    Title :"Speedo Bus Routes in Lahore (Updated 2023)",
-    Description:"Lahore, the cultural capital of Pakistan, is known for its rich history, vibrant culture, and bustling streets. However, with the...",
-    Date:"8 September 2024",
-  }
-
-]
+    id: "6",
+    Image: speedo,
+    Title: "Speedo Bus Routes in Lahore (Updated 2023)",
+    Description:
+      "Lahore, the cultural capital of Pakistan, is known for its rich history, vibrant culture, and bustling streets. However, with the...",
+    Date: "8 September 2024",
+  },
+];
 
 export const lastes_articles = [
+  {
+    id: "1",
+    Image: blog1,
+    Title:
+      "10 Most Beautiful Capitals in the World – Learn About Places to Visit And Interesting Facts",
+    Description:
+      "Embarking on a quest to find the most beautiful capital in the world  is like opening a book filled with...",
+    Date: "4 march 2024",
+  },
+  {
+    id: "2",
+    Image: blog2,
+    Title: "iPhone 15 PTA Tax; Learn All About it! (Updated September 2023)",
+    Description:
+      "If you are an Apple fan, you might wonder how much tax you will have to pay to get your...",
+    Date: "24 November 2024",
+  },
+  {
+    id: "3",
+    Image: blog3,
+    Title: "Best Parks in Karachi – Their Locations, Features and Much More",
+    Description:
+      "If you are looking for a place to relax, enjoy nature, and have fun, visit one of the many parks...",
+    Date: "25 September 2024",
+  },
 
   {
-    id:"1",
-  Image:blog1,
-    Title :"10 Most Beautiful Capitals in the World – Learn About Places to Visit And Interesting Facts",
-    Description:"Embarking on a quest to find the most beautiful capital in the world  is like opening a book filled with...",
-    Date:"4 march 2024",
+    id: "4",
+    Image: blog4,
+    Title:
+      "Earthquake Safety Information – Everything From Preparing, Surviving and Recovering from an Earthquake",
+    Description:
+      "If you live in Pakistan, you know that earthquakes are a serious threat. According to the National Geophysical Data Center,...",
+    Date: "25 September 2024",
   },
   {
-    id:"2",
- Image:blog2,
-    Title :"iPhone 15 PTA Tax; Learn All About it! (Updated September 2023)",
-    Description:"If you are an Apple fan, you might wonder how much tax you will have to pay to get your...",
-    Date:"24 November 2024",
+    id: "5",
+    Image: blog5,
+    Title:
+      "10 Best Restaurants in Karachi – Their Location, Speciality and Much More",
+    Description:
+      "Karachi is not just Pakistan’s “City of Lights”. It’s also a food lover’s paradise, where you can find some of..",
+    Date: "8 September 2024",
   },
   {
-    id:"3",
-    Image:blog3,
-    Title :"Best Parks in Karachi – Their Locations, Features and Much More",
-    Description:"If you are looking for a place to relax, enjoy nature, and have fun, visit one of the many parks...",
-    Date:"25 September 2024",
+    id: "6",
+    Image: blog6,
+    Title:
+      "CSS Exam in Pakistan: Learn about Eligibility Criteria, Age Limit, Process, and Fee Structure",
+    Description:
+      "If you want to learn about the Central Superior Services (CSS) exam in Pakistan, you might be feeling a bit...",
+    Date: "25 September 2024",
   },
-
- {
-    id:"4",
-    Image:blog4,
-    Title :"Earthquake Safety Information – Everything From Preparing, Surviving and Recovering from an Earthquake",
-    Description:"If you live in Pakistan, you know that earthquakes are a serious threat. According to the National Geophysical Data Center,...",
-    Date:"25 September 2024",
-  },
-  {
-    id:"5",
-    Image:blog5,
-    Title :"10 Best Restaurants in Karachi – Their Location, Speciality and Much More",
-    Description:"Karachi is not just Pakistan’s “City of Lights”. It’s also a food lover’s paradise, where you can find some of..",
-    Date:"8 September 2024",
-  },
-  {
-    id:"6",
-    Image:blog6,
-    Title :"CSS Exam in Pakistan: Learn about Eligibility Criteria, Age Limit, Process, and Fee Structure",
-    Description:"If you want to learn about the Central Superior Services (CSS) exam in Pakistan, you might be feeling a bit...",
-    Date:"25 September 2024",
-  }
-]
+];
