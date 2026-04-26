@@ -1,5 +1,3 @@
-
-
 import hero from "../assets/hero.png";
 import lg from "../assets/lg.png";
 import sg from "../assets/sg.png";
@@ -20,9 +18,9 @@ import islamabad from "../assets/islamabad.jpg";
 import left from "../assets/left.png";
 import right from "../assets/right.png";
 import Icon from "../assets/Icon.png";
-import img1 from "../assets/img1.png";
-import img2 from "../assets/img2.png";
-import img3 from "../assets/img3.png";
+import Img1 from "../assets/Img1.png";
+import Img2 from "../assets/Img2.png";
+import Img3 from "../assets/Img3.png";
 import bg1 from "../assets/bg1.png";
 import seller1 from "../assets/seller1.png";
 import seller2 from "../assets/seller2.png";
@@ -75,7 +73,6 @@ import men from "../assets/men.jpg";
 
 // All assets grouped here
 export const asset = {
-
   hero,
   men,
   maps,
@@ -138,7 +135,6 @@ export const blog = [
     Image: blg2,
     description: "How to Properly Verfiy Ownership in Pakistan",
   },
-
   {
     Image: blg3,
     description: "Villa Rents in Dubai have Reached on All-Time High",
@@ -150,7 +146,7 @@ export const card = [
   {
     _id: "1",
     heading: "Spacious & Luxurious in Dubai",
-    Image: img1,
+    Image: Img1,
     Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 4,
@@ -160,7 +156,7 @@ export const card = [
   {
     _id: "2",
     heading: "Modern Apartment in Downtown",
-    Image: img2,
+    Image: Img2,
     Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 3,
@@ -170,7 +166,7 @@ export const card = [
   {
     _id: "3",
     heading: "Elegant Living Space",
-    Image: img3,
+    Image: Img3,
     Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 4,
@@ -292,7 +288,6 @@ export const blog_Cards = [
       "The Islamabad-Rawalpindi Metro Bus is a modern transportation system connecting Islamabad and Rawalpindi's twin cities. The project was initiated in...",
     Date: "8 September 2024",
   },
-
   {
     id: "4",
     Image: chair,
@@ -346,7 +341,6 @@ export const lastes_articles = [
       "If you are looking for a place to relax, enjoy nature, and have fun, visit one of the many parks...",
     Date: "25 September 2024",
   },
-
   {
     id: "4",
     Image: blog4,
@@ -362,7 +356,7 @@ export const lastes_articles = [
     Title:
       "10 Best Restaurants in Karachi – Their Location, Speciality and Much More",
     Description:
-      "Karachi is not just Pakistan’s “City of Lights”. It’s also a food lover’s paradise, where you can find some of..",
+      "Karachi is not just Pakistan's "City of Lights". It's also a food lover's paradise, where you can find some of..",
     Date: "8 September 2024",
   },
   {
@@ -371,7 +365,7 @@ export const lastes_articles = [
     Title:
       "CSS Exam in Pakistan: Learn about Eligibility Criteria, Age Limit, Process, and Fee Structure",
     Description:
-      "If you want to learn about the Central Superior Services (CSS) exam in Pakistan, you might be feeling a bit...",
+      "If you want to learn about the CSS exam in Pakistan, you might be feeling a bit overwhelmed...",
     Date: "25 September 2024",
   },
 ];
