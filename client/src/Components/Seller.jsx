@@ -4,11 +4,13 @@ import { AiOutlineCloudUpload } from "react-icons/ai";
 import { CiCamera } from "react-icons/ci";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "sonner";
 import { useAppContext } from "../Context/Context";
+import { useEffect } from "react";
 
 const Seller = () => {
   const { setSellerId } = useAppContext();
+  const [sellerExists, setSellerExists] = useState(false);
 
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -29,8 +31,41 @@ const Seller = () => {
     }
   };
 
+  useEffect(() => {
+    const checkSellerExists = async () => {
+      const storedId = localStorage.getItem("sellerId");
+
+      if (!storedId) return;
+
+      const id = JSON.parse(storedId);
+
+      try {
+        const res = await axios.get(`http://localhost:3000/api/seller/${id}`);
+
+        if (res.data && res.data.seller) {
+          setSellerExists(true); // ⬅️ Set state to true
+          toast.info("Seller already exists");
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        console.error("Error fetching seller:", err);
+        // If sellerId is invalid, remove it
+        localStorage.removeItem("sellerId");
+        setSellerExists(false); // Optional
+      }
+    };
+
+    checkSellerExists();
+  }, []);
+
   const handleCreation = async (e) => {
     e.preventDefault();
+
+    // ⛔ Prevent duplicate seller creation
+    if (sellerExists) {
+      toast.error("Seller already exists. Cannot create another.");
+      return;
+    }
 
     if (!image) {
       toast.error("Please upload an image");
@@ -56,7 +91,7 @@ const Seller = () => {
         formData,
         {
           headers: {
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
           },
         }
@@ -66,7 +101,7 @@ const Seller = () => {
         const SellerId = res.data.seller._id;
 
         setSellerId(SellerId);
-        localStorage.setItem("sellerId", JSON.stringify(SellerId));
+        localStorage.setItem("sellerId", SellerId); // ✅ Don't stringify
 
         toast.success("Seller Created Successfully");
 
@@ -120,11 +155,17 @@ const Seller = () => {
           <form className="space-y-4 w-full" onSubmit={handleCreation}>
             {/* Image Upload */}
             <div className="flex flex-col space-y-2 items-start">
-              <h2 className="text-2xl text-gray-600 font-bold">Profile photo</h2>
+              <h2 className="text-2xl text-gray-600 font-bold">
+                Profile photo
+              </h2>
               <div className="flex items-center gap-8 mt-4">
                 <div className="z-0 w-20 h-20 rounded-full flex justify-center items-center overflow-hidden bg-gray-100">
                   {preview ? (
-                    <img src={preview} alt="Preview" className="object-cover w-full h-full" />
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="object-cover w-full h-full"
+                    />
                   ) : (
                     <CiCamera className="z-10 w-16 h-16 text-gray-400" />
                   )}
@@ -144,7 +185,9 @@ const Seller = () => {
             </div>
 
             {/* Name */}
-            <label htmlFor="name" className="text-md font-bold text-gray-600">Enter Your Name</label>
+            <label htmlFor="name" className="text-md font-bold text-gray-600">
+              Enter Your Name
+            </label>
             <input
               type="text"
               placeholder="Full Name"
@@ -186,7 +229,12 @@ const Seller = () => {
             )}
 
             {/* Address */}
-            <label htmlFor="address" className="text-md font-bold text-gray-600">Enter Your Address</label>
+            <label
+              htmlFor="address"
+              className="text-md font-bold text-gray-600"
+            >
+              Enter Your Address
+            </label>
             <textarea
               placeholder="Enter Your Address"
               onChange={(e) => setAddress(e.target.value)}

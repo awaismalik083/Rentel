@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import PropertyModel from "../models/propertyModel.js";
+import mongoose from "mongoose";
 
 // ✅ Define __dirname manually (ES Module fix)
 const __filename = fileURLToPath(import.meta.url);
@@ -58,23 +59,32 @@ const createSeller = async (req, res) => {
 
 
 
-// ✅ Get seller by ID
 const getSellerId = async (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
+
+  // Optional: remove leading colon (:) if malformed
+  id = id.replace(/^:/, "");
+
+  // Validate MongoDB ObjectId format
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid seller ID format",
+    });
+  }
+
   try {
     const seller = await Seller.findById(id);
- 
 
-    if (!seller ) {
+    if (!seller) {
       return res.status(404).json({
         success: false,
-        message: "Seller does not exist ",
+        message: "Seller does not exist",
       });
     }
 
     return res.status(200).json({
       success: true,
-     
       message: "Seller found",
       seller,
     });
@@ -86,7 +96,6 @@ const getSellerId = async (req, res) => {
     });
   }
 };
-
 
 // ✅ Update seller
 export const updateSeller = async (req, res) => {

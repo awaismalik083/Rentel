@@ -4,7 +4,6 @@ import { FaSearch } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { asset } from "../assets/asset";
 import { useAppContext } from "../Context/Context";
 
 const DashNavbar = () => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAppContext } from '../Context/Context';
-import { asset } from '../assets/asset';
 
 const BlogArticles = () => {
     const { blog_Cards,lastes_articles } = useAppContext();
