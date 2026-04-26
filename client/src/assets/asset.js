@@ -355,8 +355,8 @@ export const lastes_articles = [
     Image: blog5,
     Title:
       "10 Best Restaurants in Karachi – Their Location, Speciality and Much More",
-    Description:
-      "Karachi is not just Pakistan's "City of Lights". It's also a food lover's paradise, where you can find some of..",
+
+    Description: `Karachi is not just Pakistan's "City of Lights". It's also a food lover's paradise, where you can find some of..`,
     Date: "8 September 2024",
   },
   {
