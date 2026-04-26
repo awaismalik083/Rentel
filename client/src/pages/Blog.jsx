@@ -8,7 +8,7 @@ import BlogNav from '../Components/BlogNav';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import { asset } from '../assets/asset';
-import BlogArticles from '../Components/blogArticles';
+import BlogArticles from '../Components/BlogArticles';
 import BlogFooter from './BlogFooter';
 const Blog = () => {
   const textRef = useRef();
