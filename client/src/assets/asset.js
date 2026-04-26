@@ -19,7 +19,7 @@ import bwp from "../assets/bwp.png";
 import islamabad from "../assets/islamabad.jpg";
 import left from "../assets/left.png";
 import right from "../assets/right.png";
-import icon from "../assets/icon.png";
+import Icon from "../assets/Icon.png";
 import img1 from "../assets/img1.png";
 import img2 from "../assets/img2.png";
 import img3 from "../assets/img3.png";
@@ -102,7 +102,7 @@ export const asset = {
   office,
   left,
   right,
-  icon,
+  Icon,
   bg1,
   seller1,
   seller2,
@@ -151,7 +151,7 @@ export const card = [
     _id: "1",
     heading: "Spacious & Luxurious in Dubai",
     Image: img1,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 4,
     Baths: 2,
@@ -161,7 +161,7 @@ export const card = [
     _id: "2",
     heading: "Modern Apartment in Downtown",
     Image: img2,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 3,
     Baths: 2,
@@ -171,7 +171,7 @@ export const card = [
     _id: "3",
     heading: "Elegant Living Space",
     Image: img3,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 4,
     Baths: 3,
@@ -185,7 +185,7 @@ export const card2 = [
     _id: "4",
     heading: "Luxury Villa with Sea View",
     Image: img5,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 5,
     Baths: 3,
@@ -195,7 +195,7 @@ export const card2 = [
     _id: "5",
     heading: "Modern Family Home",
     Image: img6,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 4,
     Baths: 2,
@@ -205,7 +205,7 @@ export const card2 = [
     _id: "6",
     heading: "Comfortable and Stylish Flat",
     Image: img7,
-    Image1: icon,
+    Image1: Icon,
     location: "Downtown, Dubai",
     Beds: 3,
     Baths: 2,
