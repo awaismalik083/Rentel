@@ -5,7 +5,6 @@ import lg from "../assets/lg.png";
 import sg from "../assets/sg.png";
 import home from "../assets/home.png";
 import user from "../assets/user.png";
-import logo from "../assets/logo.png";
 import bg from "../assets/bg.png";
 import phone from "../assets/phone.png";
 import search from "../assets/search.png";
@@ -76,7 +75,7 @@ import men from "../assets/men.jpg";
 
 // All assets grouped here
 export const asset = {
-  logo,
+
   hero,
   men,
   maps,
